@@ -1,0 +1,61 @@
+ID: ct-haa
+_schema-version: '2.0'
+version: 0.0.1
+
+modules:
+
+ - name: ct-haa-svc
+   type: java
+   path: java
+   parameters:
+     memory: 1024M
+     buildpack: sap_java_buildpack
+   properties:
+     TARGET_RUNTIME: tomee
+     SAP_JWT_TRUST_ACL: '[{"clientid":"*", "identityzone": "*"}]'
+     JBP_CONFIG_RESOURCE_CONFIGURATION: "['tomee/webapps/ROOT/WEB-INF/resources.xml': {'xsahaa-hdi-container':'conciletime-hdb'}]"
+   provides:
+    - name: xsahaa
+      properties:
+        url: ${default-url}
+   requires:
+    - name: conciletime-hdb
+    - name: haa-uaa
+
+ - name: ct-haa-web
+   type: nodejs
+   path: approuter
+   parameters:
+     memory: 128M
+     buildpack: nodejs_buildpack
+   requires:
+    - name: haa-uaa
+    - name: xsahaa
+      group: destinations
+      properties:
+        name: XSAHAA_BACKEND
+        url: ~{url}
+        forwardAuthToken: true
+   properties:
+     CORS: >
+        [
+          {
+            "uriPattern": "^/sap/bc/ina/(.*)$",
+            "allowedOrigin": [ { "host": "*", "protocol": "https" },
+                               { "host": "*", "protocol": "http" }
+            ],
+            "allowedMethods": ["GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE"],
+            "allowedHeaders": ["Origin", "Accept", "X-Requested-With", "Content-Type", "Access-Control-Request-Method", "Access-Control-Request-Headers", "Authorization", "X-Sap-Cid", "X-Csrf-Token", "Accept-Language"],
+            "exposeHeaders": ["Accept", "Authorization", "X-Requested-With", "X-Sap-Cid", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "X-Csrf-Token", "Content-Type"]
+          }
+        ]
+
+resources:
+ - name: conciletime-hdb
+   parameters:
+      service-name: CONCILE_HDB
+   type: org.cloudfoundry.existing-service
+ - name: haa-uaa
+   parameters:
+      service-name: HAA_UAA
+   type: org.cloudfoundry.existing-service

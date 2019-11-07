@@ -1,0 +1,9 @@
+    [
+      {
+        "uriPattern": "^/sap/bc/ina/(.*)$",
+        "allowedOrigin": [{"host" : "ateam-isveng.us10.sapanalytics.cloud", "protocol" : "https", "port" : "443"}],
+        "allowedMethods": ["GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE"],
+        "allowedHeaders": ["Origin", "Accept", "X-Requested-With", "Content-Type", "Access-Control-Request-Method", "Access-Control-Request-Headers", "Authorization", "X-Sap-Cid", "X-Csrf-Token"],
+        "exposeHeaders": ["Accept", "Authorization", "X-Requested-With", "X-Sap-Cid", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "X-Csrf-Token", "Content-Type"]
+      }
+    ]
