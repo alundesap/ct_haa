@@ -1,7 +1,0 @@
-npm WARN approuter@ No description
-npm WARN approuter@ No repository field.
-npm WARN approuter@ No license field.
-
-audited 406 packages in 1.021s
-found 5 high severity vulnerabilities
-  run `npm audit fix` to fix them, or `npm audit` for details

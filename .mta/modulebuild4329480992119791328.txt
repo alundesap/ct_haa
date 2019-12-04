@@ -1,0 +1,7 @@
+npm WARN haa-entry@ No description
+npm WARN haa-entry@ No repository field.
+npm WARN haa-entry@ No license field.
+
+audited 406 packages in 1.018s
+found 5 high severity vulnerabilities
+  run `npm audit fix` to fix them, or `npm audit` for details
